@@ -11,10 +11,14 @@ dotenv.config();// for hiding mongo and jwt keys;
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
-app.listen(8080, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log("Server Is running on port 8080!!");
 });
 
+app.use((req, res, next) => {
+  res.setHeader('Content-Security-Policy', "default-src 'self'");
+  next();
+});
 
 //connecting database
 mongoose

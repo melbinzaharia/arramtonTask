@@ -1,5 +1,6 @@
 
 import { body } from 'express-validator';
+import User from "../models/user.model.js";
 
 
 const signupValidationRules = () => {
@@ -32,6 +33,12 @@ const signupValidationRules = () => {
       .withMessage('Username is required')
       .isLength({ min: 8 })
       .withMessage('username must be at least 8 characters')
+      .custom(async (value) => {
+        const user = await User.findOne({ username: value });
+        if (user) {
+            throw new Error('Username already exists');
+        }
+    });
       
   
     const emailValidation = body('email')
@@ -40,7 +47,13 @@ const signupValidationRules = () => {
       .not()
       .isEmpty()
       .isEmail()
-      .withMessage('Valid email is required');
+      .withMessage('Valid email is required')
+      .custom(async (value) => {
+        const user = await User.findOne({ email: value });
+        if (user) {
+            throw new Error('Email already exists');
+        }
+    });
   
     return [
       firstnameValidation,
