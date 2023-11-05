@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import authRouter from "./routes/auth.route.js";
+import userRouter from "./routes/user.route.js";
 dotenv.config();// for hiding mongo and jwt keys;
 
 
@@ -30,6 +31,7 @@ mongoose
 
 
 app.use("/api/auth", authRouter);  //for all authorization purposes 
+app.use("/api/user", userRouter);  //for getting user details 
 
 //middleware
 app.use((err, req, res, next) => {
